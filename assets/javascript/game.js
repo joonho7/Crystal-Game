@@ -1,66 +1,58 @@
-var crystalOne = 'x';
-var crystalTwo = 'y';
-var crystalThree = 'z';
-var crystalFour = 'w';
-var totalNumber;
+$(document).ready(function() {
+var goalNumbGen;
+var crystalOne;
+var crystalTwo;
+var crystalThree;
+var crystalFour;
+var totalNumber = 0;
 var gameGoing = false;
-var win;
-var losses;
-function crystalGenerator(a){
-  return a = Math.floor(Math.random()*12+1);
-}
+var win = 0;
+var losses = 0;
 
 function goalNumberGenerator(){
-	return Math.floor(Math.random()*120+19)
+	goalNumbGen = Math.floor(Math.random()*(120 - 19 + 1) + 19);
+	$("#goalNumber").text(goalNumbGen)
 }
 
-window.onload = function(){
-$("#crystal-1").click(crystalGenerator('x'));
-$("#crystal-2").click(crystalGenerator('y'));
-$("#crystal-3").click(crystalGenerator('z'));
-$("#crystal-4").click(crystalGenerator('w'));
-$("#goalNumber").html(goalNumberGenerator());
-gameGoing=true;
-};
+goalNumberGenerator();
 
-function initializeGame(){
-if(gameGoing){
-$("#crystal-1").click(crystalGenerator('x'));
-$("#crystal-2").click(crystalGenerator('y'));
-$("#crystal-3").click(crystalGenerator('z'));
-$("#crystal-4").click(crystalGenerator('w'));
-$("#goalNumber").html(goalNumberGenerator());
-gameGoing = true;
- }
- addtition();
+function crystalAssigner(){
+	crystalOne = Math.floor(Math.random()*(12-1+1)+1);
+	crystalTwo = Math.floor(Math.random()*(12-1+1)+1);
+	crystalThree = Math.floor(Math.random()*(12-1+1)+1);
+	crystalFour = Math.floor(Math.random()*(12-1+1)+1);
+	$("#crystal-1").attr("data-crystal", crystalOne)
+	$("#crystal-2").attr("data-crystal", crystalTwo)
+	$("#crystal-3").attr("data-crystal", crystalThree)
+	$("#crystal-4").attr("data-crystal", crystalFour)
+
 }
 
-function addition(){
-	if(!gameGoing){
-	$("#crystal-1").click('x');
-	$("#crystal-1").click('y');
-	$("#crystal-1").click('z');
-	$("#crystal-1").click('w');
-	totalNumber = 'x' + 'y'+ 'z' + 'w';
-	$("#totalNumber").html(totalNumber);
- }
+crystalAssigner();
+
+
+function reset(){
+totalNumber = 0;
+goalNumberGenerator(); 
+crystalAssigner();
+$("#totalNumber").text(totalNumber);
 }
 
-function winLoss(){
-	if(totalNumber<goalNumberGen){
+$(".crystals").on('click',function(){
+totalNumber += parseInt($(this).attr("data-crystal"));
+console.log(totalNumber);
+$("#totalNumber").text(totalNumber)
+	if(totalNumber < goalNumbGen){
 		gameGoing = true;
-	}else if(totalNumber===goalNumberGen){
+	}else if(totalNumber===goalNumbGen){
 		win++;
-		gameGoing = false;
-		initializeGame();
+		reset();
 	}else{
 		losses--;
-		gameGoing = false;
-		initializeGame();
+		reset();
 	}
-	$("#wins").text(win);
-	$("#losses").text(losses);
-}
+$("#wins").text(win);
+$("#losses").text(losses);
+});
 
-
-
+});
